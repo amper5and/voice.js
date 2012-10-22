@@ -323,7 +323,7 @@ exports.Client.prototype._processResponse = function(options, callback, neededTo
 			return new xml2js.Parser().parseString(body, function(err, xml){
 				if(err){
 					return callback(new GoogleVoiceError('XML2JS_ERROR', err), res, body);
-				}else if(!xml && !xml.response || !xml.response.json){
+				}else if(!xml || !xml.response || !xml.response.json){
 					return callback(new GoogleVoiceError('UNKNOWN_FORMAT', "COULDN'T EXTRACT JSON FROM XML RESPONSE"), res, body);
 				}else{
 					try{
@@ -395,7 +395,7 @@ exports.Client.prototype._exec = function(methods, command, options, callback){
 	for(var name in method.options){
 		if(method.options[name].fixed){
 			options[name] = method.options[name].default;
-		}else if( !options.hasOwnProperty(name) && method.options[name].demand){
+		}else if( (!options.hasOwnProperty(name) || options[name] === null) && method.options[name].demand){
 			return callback(new GoogleVoiceError('MISSING_REQUIRED_PARAMETER', { parameter: name } )) ;
 		}
 	}
@@ -404,7 +404,7 @@ exports.Client.prototype._exec = function(methods, command, options, callback){
 	var parameters = {}; // the parameters that will be submitted
 	
 	for(var name in method.options){
-		if(!options.hasOwnProperty(name)){
+		if(!options.hasOwnProperty(name) || options[name] === null){
 			if(method.options[name].hasOwnProperty('default')){
 				if(typeof method.options[name].default === 'function'){
 					var value = method.options[name].default.call(method, options);
