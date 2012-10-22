@@ -20,7 +20,7 @@ client.name('get', function(error, response, data){
 
 
 // Receive a call to record a new name
-client.name('record',{ number: 'alexstets@gmail.com', type: 'googletalk'}, function(error, response, data){
+client.name('record',{ number: 'alexstets@gmail.com'}, function(error, response, data){
 	if(error){
 		return console.log(error);
 	}
