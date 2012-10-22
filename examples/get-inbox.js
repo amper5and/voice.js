@@ -29,13 +29,14 @@ client.get('inbox', function(error, response, data){
 	
 	// Display the conversations indicating if they are unread (+) or starred(*)
 	data.conversations_response.conversation.forEach(function(convo, index){
-		console.log('%s %s. %s %s %s %s', 
+		console.log('%s %s. %s %s %s %s   %s', 
 			convo.read ? ' ' : '+', 
 			(index+1+'').padLeft(3),  
 			convo.phone_call[0].contact.phone_number_formatted.padLeft(15), 
 			new Date(convo.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
 			convo.label.is('starred') ? '*' : ' ',
-			convo.label
+			convo.id,
+    		convo.label.join()
 		);
 	});
 });

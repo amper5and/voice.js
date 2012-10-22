@@ -30,13 +30,14 @@ client.get('all', {limit: Infinity}, function(error, response, data){
 		
 	// Display the conversations in descending order indicating if they are unread (+) or starred (*), as well as all the labels associated with each
 	data.conversations_response.conversation.reverse().forEach(function(convo, index){
-		console.log('%s %s. %s %s %s %s', 
+		console.log('%s %s. %s %s %s %s   %s', 
 			convo.read ? ' ' : '+', 
 			(index+1+'').padLeft(4),  
-			convo.phone_call[0].contact.phone_number_formatted.padLeft(15), 
+			convo.phone_call[0].contact.phone_number_formatted.padLeft(18), 
 			new Date(convo.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
 			convo.label.is('starred') ? '*' : ' ',
-			convo.label
+			convo.id,
+			convo.label.join()
 		);
 	});
 	
