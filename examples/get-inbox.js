@@ -27,7 +27,7 @@ client.get('inbox', function(error, response, data){
 	
 	console.log('\n INBOX: Latest conversations');
 	
-	// Display the conversations indicating if they have been read or starred and whether it's a text or voicemail
+	// Display the conversations indicating if they are unread (+) or starred(*)
 	data.conversations_response.conversation.forEach(function(convo, index){
 		console.log('%s %s. %s %s %s %s', 
 			convo.read ? ' ' : '+', 
@@ -35,7 +35,7 @@ client.get('inbox', function(error, response, data){
 			convo.phone_call[0].contact.phone_number_formatted.padLeft(15), 
 			new Date(convo.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
 			convo.label.is('starred') ? '*' : ' ',
-			convo.label.is('voicemail') ? 'voicemail' : convo.label.is('sms') ? 'sms' : ''
+			convo.label
 		);
 	});
 });
