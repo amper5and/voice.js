@@ -17,7 +17,7 @@ client.get('voicemail', {limit: 1}, function(error, response, data){
 	var id = data.conversations_response.conversation[0].id;
 	
 	// Note that if you try to forward a non-voicemail/recorded message, a 500 Server Error (response.statusCode === 500) will occur
-	client.set('forward',{
+	client.forward({
 		id: id, // required, voicemail or recorded message id
 		email: 'email@gmail.com', // required, can also be ['email1@gmail.com', 'email2@gmail.com']
 		subject: 'A test message from voice.js', // optional

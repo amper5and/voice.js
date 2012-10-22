@@ -35,7 +35,7 @@ It's not on [npm](https://npmjs.org) yet. Once it's a little more stable, it'll 
 For now, install by running `npm install` in the main voice.js directory. 
 
 ## API
-The API documentation is forthcoming. In the meantime, see the examples folder to get started.
+The API documentation is in `API.md`. Also, see the examples for clarifications. 
 
 ## License
 MIT License. See LICENSE.

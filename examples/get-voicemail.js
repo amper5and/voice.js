@@ -42,7 +42,8 @@ client.get('voicemail', {limit: 5}, function(error, response, data){
 			console.log(convo.phone_call[0].transcript.word_tokens.map(function(entry){ return entry.word}).join(' '));
 		}
 		
-		client.getAudio({id: convo.id, type: 'mp3'}, function(err, res, data){
+        // Download the voicemail mp3
+		client.getAudio({id: convo.id, format: 'mp3'}, function(err, res, data){
 			if(err){
 				console.log(err)
 				return;

@@ -497,7 +497,10 @@ for(var name in methods){
 	exports.Client.prototype[name] = createMethod(name);	
 }
 
-// convenience methods for client.comm()
+// convenience methods
+exports.Client.prototype.forward = function(options, callback){
+    return this._exec(methods.set, 'forward', options, callback);
+};
 exports.Client.prototype.sms = function(options, callback){
 	return this._exec(methods.comm, 'sms', options, callback);
 };
