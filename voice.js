@@ -440,7 +440,7 @@ exports.Client.prototype._exec = function(methods, command, options, callback){
 			continue; // this is a parameter that wil not be part of the form or the query
 		}else if(method.options[name].handler){
 			var newOptions = method.options[name].handler.call(method, options[name], options);
-			if(util.isError(newOptions)){ // a problem with the passed in parameter
+			if(newOptions && newOptions.name === 'GoogleVoiceError'){ // the returned object is a GoogleVoiceError
 				return callback(newOptions);
 			}else{
 				for(var variable in newOptions){ // add in the new options
