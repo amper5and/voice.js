@@ -8,7 +8,7 @@ var client = new voicejs.Client({
 });
 
 
-// beautify
+// Beautify
 String.prototype.padLeft = function(length){
 	return new Array(length - this.length + 1).join(' ') + this; 
 }

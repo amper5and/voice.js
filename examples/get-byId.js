@@ -1,25 +1,25 @@
 var voicejs = require('../voice.js');
 
 var client = new voicejs.Client({
-	email: 'email@gmail.com',
+    email: 'email@gmail.com',
 	password: 'password',
 	tokens: require('./tokens.json')
 });
 
 
-// Beautify
+// beautify
 String.prototype.padLeft = function(length){
 	return new Array(length - this.length + 1).join(' ') + this; 
-}
+};
 
 // Helper function to indicate whether an Array contains an entry
 // Used to check if a conversation has a certain label, such as convo.label.is('starred')
 Array.prototype.is = function(entry){
 	return !!~this.indexOf(entry);
-}
+};
 
 function displayConversations(conversations){
-    conversations.forEach(function(convo, index){
+	conversations.forEach(function(convo, index){
 		console.log('%s %s. %s %s %s %s   %s', 
 			convo.read ? ' ' : '+', 
 			(index+1+'').padLeft(3),  
@@ -32,28 +32,25 @@ function displayConversations(conversations){
 	});
 }
 
-
-// Get the default number (20) of conversations, starting with the first one
-client.get('inbox', function(error, response, data){
+// Get latest three received calls, then fetch them by id
+client.get('received', {limit:3}, function(error, response, data){
 	if(error){
 		return console.log(error);
 	}
-    
 	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
 	
-	console.log('\n INBOX: Latest conversations');
+	console.log('\nLatest 3 received calls:');
 	displayConversations(data.conversations_response.conversation);
-});
-
-
-// Get 5 conversations, starting with the 10th one
-client.get('inbox', {start: 10, limit: 5}, function(error, response, data){
-	if(error){
-		return console.log(error);
-	}
 	
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+	var ids = data.conversations_response.conversation.map(function(obj){ return obj.id});
 	
-	console.log('\n INBOX: Conversations 10-'+ (10+data.conversations_response.conversation.length-1) );
-	displayConversations(data.conversations_response.conversation);
+	client.get('byId', {id: ids}, function(error, response, data){
+		if(error){
+			return console.log(error);
+		}
+		if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+		
+		console.log('\nFetched by id:');
+		displayConversations(data.conversations_response.conversation);
+	});
 });
