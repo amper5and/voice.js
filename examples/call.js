@@ -7,7 +7,7 @@ var client = new voicejs.Client({
 });
 
 
-// Connect to 18005551212 using one your GV forwarding phone 1234567890
+// Connect to 18005551212 using your GV forwarding phone 1234567890
 client.connect({ to: '18005551212', from: '1234567890'}, function(err, res, data){
 	if(err){
 		return console.log(err);
@@ -16,7 +16,7 @@ client.connect({ to: '18005551212', from: '1234567890'}, function(err, res, data
 	
 	//cancel the call after 10 seconds
 	setTimeout(function(){
-		client.comm('cancel', function(error, response, data){
+		client.cancel(function(error, response, data){
 			return error ? console.log(error) : console.log('Call cancelled.');
 		})
 	}, 10000);
@@ -32,7 +32,7 @@ client.connect({ to: '18005551212', from: 'email@gmail.com' }, function(err, res
 	
 	//cancel the call after 10 seconds
 	setTimeout(function(){
-		client.comm('cancel', function(error, response, data){
+		client.cancel(function(error, response, data){
 			return error ? console.log(error) : console.log('Call cancelled.');
 		})
 	}, 10000);
@@ -40,11 +40,11 @@ client.connect({ to: '18005551212', from: 'email@gmail.com' }, function(err, res
 
 
 // Connect to 18005551212 using your GV forwarding phone 1234567890 and 
-// a special access number that will dial directly to your outgoing number
+// a special access number that will dial directly to your outgoing number.
 // Note this does not appear to work with Google Talk forwarding numbers
 client.call({ to: '18005551212', from: '1234567890'}, function(err, res, data){
 	if(err){
 		return console.log(err);
 	}
-	console.log('Call confirmed. Use the forwarding phone to dial', data.call_through_response.access_number);
+	console.log('Call confirmed. Use the forwarding phone 1234567890 to dial', data.call_through_response.access_number);
 });
