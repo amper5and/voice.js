@@ -140,10 +140,8 @@ client.phones('new',{
 			
 			// Verify the new phone by initiating a callback to it with a verification code
 			client.phones('verify',{
-				id: phoneId,
-				type: newPhone.type, 
 				number: newPhone.number,
-				code: 25
+    			code: '25'
 			}, function(error, response, data){
 				if(error){
 					return console.log(error);
