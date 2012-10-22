@@ -1,0 +1,17 @@
+{
+  "author" : "Alexander Stetsyuk <alexstets@gmail.com>",
+  "dependencies" : {
+    "googleclientlogin" : ">=0.2.4",
+    "request" : ">=2.11.4",
+    "xml2js" : ">=0.2.0"
+  },
+  "description" : "Google Voice library for node.js",
+  "homepage" : "https://github.com/amper5and/voice.js",
+  "main" : "./voice.js",
+  "name" : "voice.js",
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/amper5and/voice.js.git"
+  },
+  "version" : "1.0.0"
+}
