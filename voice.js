@@ -47,7 +47,11 @@ exports.Client = function(options){
 exports.Client.prototype = Object.create(EE.prototype);
 
 exports.Client.prototype.getTokens = function(){
-	return this._tokens || {};
+	var toks = {};
+	for(var name in this._tokens){
+		toks[name] = this._tokens[name]
+	}
+	return toks;
 };
 
 exports.Client.prototype._setToken = function(name, value){
@@ -442,7 +446,7 @@ exports.Client.prototype._exec = function(methods, command, options, callback){
 			var newOptions = method.options[name].handler.call(method, options[name], options);
 			if(newOptions && newOptions.name === 'GoogleVoiceError'){ // the returned object is a GoogleVoiceError
 				return callback(newOptions);
-			}else{
+			}else if(newOptions){
 				for(var variable in newOptions){ // add in the new options
 					parameters[variable] = newOptions[variable];
 				}
