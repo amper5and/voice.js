@@ -443,7 +443,7 @@ exports.Client.prototype._exec = function(methods, command, options, callback){
 		if(method.options[name].hasOwnProperty('submit') && method.options[name].submit === false){
 			continue; // this is a parameter that wil not be part of the form or the query
 		}else if(method.options[name].handler){
-			var newOptions = method.options[name].handler.call(method, options[name], options);
+			var newOptions = method.options[name].handler.call(method, options[name], options, parameters);
 			if(newOptions && newOptions.name === 'GoogleVoiceError'){ // the returned object is a GoogleVoiceError
 				return callback(newOptions);
 			}else if(newOptions){
