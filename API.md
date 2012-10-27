@@ -72,7 +72,7 @@ Send an sms to one or more recipients, without getting the conversation id in th
 Gets the updated read/unread count for each label. `labels` is an Array with the standard Google Voice labels. Each label has `unread_count`, `total_count`, and `last_modified_timestamp` properties.
 
 
-## Get conversations
+## Get conversations: client.get(command, options, callback)
 
 #### client.get( label, options, callback )
 Retrieve conversations filed under the standard GV labels. Response has `conversations_response.conversation` property with the conversations.
@@ -87,27 +87,36 @@ Retrieve conversation(s) by conversation id. Response has `conversations_respons
 
 * id: String or Array, required - The conversation(s) to retrieve
 
-#### client.getAudio( { id: id, format: format }, callback )
+
+## Download audio
+#### client.getAudio({ id: id, format: format }, callback )
 Download the audio of a recorded or voicemail message. The response is the binary audio data.
 
 * id: String, required - the id of a RECORDED or VOICEMAIL message. If this is for any other type of message, an error will occur.
 * format: String, required - The audio format: 'mp3' or 'ogg'
 
 
-## Edit conversations
+## Edit conversations: client.set(command, options, callback)
 
-#### client.set( label, { id: id }, callback )
+#### client.set( 'mark', options, callback )
+Mark/unmark one or more conversations as read, starred, spam, or archived. Optionally, toggle trash on a conversation. 
+
+`options` takes the following parameters:
+
+* id: String or Array, required - The conversation(s) to manipulate
+* star: Boolean, optional - star/unstar the conversation(s)
+* read: Boolean, optional - mark the conversation(s) as read/unread
+* archive: Boolean, optional - archive/unarchive the conversation(s)
+* spam: Boolean, optional - mark/unmark the conversation(s) as spam
+* toggleTrash: Boolean, optional - if the conversation(s) are in the trash, remove them from the trash. If they are elsewhere, move them to the trash. (There is currently no way to force the conversation(s) to go one way or the other. )
+
+#### client.set( command, { id: id }, callback )
 Manipulate one or more conversations.
 
-* label: String, required - One of:
-	* 'read'/'unread'
-	* 'star'/'unstar'
-	* 'spam'/'unspam'
+* command: String, required - One of:
 	* 'block'/'unblock' - block/unblock the caller associated with the conversation
 	* 'donate'/'undonate' - donate/undonate the transcript of the conversation to Google to improve their transcription services
-	* 'archive'/'unarchive' - move to/from the inbox
 	* 'deleteForever' - delete the conversation permanently
-	* 'toggleTrash' - moves a conversation in the trash to the inbox, or a conversation in the inbox to the trash
 * id: String or Array, required - The conversation(s) to manipulate
 
 #### client.set( 'saveNote', { id: id, note: note }, callback )
@@ -145,7 +154,7 @@ Forward voicemails and recorded calls to one or more email recipients.
 * link: Boolean, optional, default `false` - Whether to include a link to audio and a copy of the transcript.
 
 
-## Settings
+## Settings: client.settings(command, options, callback)
 
 #### client.settings( 'get', callback )
 Retrieve Google Voice settings, forwarding phones, groups, and greetings. See `examples/settings.js` for information on how to process the response.
@@ -191,7 +200,7 @@ Turns on DND with an expiration date.
 * date: Date - The date and time when DND will be disabled.
 
 
-## Forwarding phones
+## Forwarding phones: client.phones(command,options,callback)
 See `examples/phones.js` for information on how to retrieve and manipulate forwarding phones.
 
 #### client.phones( 'get', callback )

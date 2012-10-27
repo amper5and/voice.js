@@ -29,6 +29,7 @@ client.widgets('get', function(error, response, data){
 		);
 	});
 	
+	
 	// Create a new widget, but disable it
 	client.widgets('new', {
 		name: 'New Widget',
@@ -39,6 +40,7 @@ client.widgets('get', function(error, response, data){
 		}
 		console.log('\nNew webcall widget:');
 		console.log(data.webCallButton);
+		
 		
 		// Enable the new widget, but disable it from ringing forwarding phone 9
 		// Any options not passed will be RESET by Google to default values, so we could just as well leave out the 'disabled:false' and it would be set to false anyway
@@ -53,6 +55,7 @@ client.widgets('get', function(error, response, data){
 			}
 			console.log('\nNew webcall widget settings:');
 			console.log(data.webCallButton); // could check response widget to make sure that it's not a newly-created one (see above comment next to id)
+			
 			
 			// Delete the widget
 			client.widgets('delete', {id: data.webCallButton.id}, function(error, response, data){

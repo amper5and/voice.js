@@ -1,6 +1,6 @@
 *.log
+*.tmproj
 node_modules
 test
 .c9revisions
-voicejs.tmproj
-examples/tokens.json
+tokens.json

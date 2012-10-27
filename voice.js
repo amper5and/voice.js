@@ -497,14 +497,12 @@ function createMethod(name){
 		return this._exec(methods[name], command, options, callback);
 	};
 }
+
 for(var name in methods){
 	exports.Client.prototype[name] = createMethod(name);	
 }
 
 // convenience methods
-exports.Client.prototype.forward = function(options, callback){
-    return this._exec(methods.set, 'forward', options, callback);
-};
 exports.Client.prototype.sms = function(options, callback){
 	return this._exec(methods.comm, 'sms', options, callback);
 };
@@ -523,6 +521,10 @@ exports.Client.prototype.call = function(options, callback){
 
 exports.Client.prototype.cancel = function(options, callback){
 	return this._exec(methods.comm, 'cancel', options, callback);
+};
+
+exports.Client.prototype.forward = function(options, callback){
+    return this._exec(methods.set, 'forward', options, callback);
 };
 
 exports.Client.prototype.getAudio = function(options, callback){

@@ -21,7 +21,7 @@ The short of it is:
 
 ### Token events
 As tokens are obtained from Google Voice, the client emits the 'auth', 'rnr', and 'gvx' events with the new tokens.
-Notice that the 'auth' event fires twice. That's because an auth token is obtained in two cases:
+Notice that the 'auth' event fires twice. That's because an `auth` token is obtained in two cases:
 
 1. when the auth token is retrieved
 2. when the gvx token is retrieved (because gvx tokens are issued with a new auth token)
@@ -32,7 +32,9 @@ Downloaded tokens can be retrieved (for storage) from the client using `client.g
 
 * `rnr` tokens are valid indefinitely 
 * `gvx` tokens appear to be valid for a year
-* `auth` tokens are valid for unknown period of time.
+* `auth` tokens are valid for unknown period of time. 
+
+At the time of this writing, I have been able to use the same tokens for two weeks. I will keep testing the upper limit of this timeframe and will update this document to reflect the results.
 
 To store tokens:
 
