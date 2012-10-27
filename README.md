@@ -6,7 +6,7 @@ version 1.0.0 (alpha)
 ## What is it?
 It's the Google Voice library for [node.js](http://nodejs.org/).
 
-It builds on and improves on [node-google-voice](https://github.com/amper5and/node-google-voice), the original node.js Google Voice library.
+It builds on and improves [node-google-voice](https://github.com/amper5and/node-google-voice), the original node.js Google Voice library.
 
 It currently allows you to:
 
@@ -20,6 +20,17 @@ It currently allows you to:
 * access and manipulate GV greetings
 * access and manipulate GV webcall widgets
 
+
+## Installation
+Install via [npm](https://npmjs.org):
+
+	npm install voicejs
+
+As this is in alpha, the version of npm may not reflect all the latest changes. To get the most up-to-date version, download [the current master](https://github.com/amper5and/voice.js/zipball/master), then run the following code from inside the folder:
+
+	npm install
+
+
 ## Dependencies
 
 * [node.js](http://nodejs.org) 
@@ -29,16 +40,14 @@ It currently allows you to:
 
 [npm](https://github.com/isaacs/npm) should take care of dependencies, but in case it fails to do so, try installing these modules (and *their* dependencies) independently.
 
-## Installation
-It's not on [npm](https://npmjs.org) yet. Once it's a little more stable, it'll be there.
-
-For now, install by running `npm install` in the main voice.js directory. 
 
 ## API
-The API documentation is in `API.md`. Also, see the examples for clarifications. 
+The API documentation is in `docs/API.md`. Also, see the examples for clarifications. 
+
 
 ## License
 MIT License. See LICENSE.
+
 
 ## Conclusion
 Google does not have an official Google Voice API. Therefore, the nature of the requests and returned data can change without notice. It is unlikely to change often or soon, but I will make all efforts to keep up with the most current implementation. If you have any issues, please give me a shout, and I'll do my best to address them.
