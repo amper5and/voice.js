@@ -7,7 +7,7 @@ var client = new voicejs.Client({
 });
 
 // This example retrieves the different authentication tokens and saves them to tokens.json
-// See the file TOKENS.md for more informationi on tokens.
+// See the file TOKENS.md for more information on tokens.
 
 function newToken(){ // check if the client has all the tokens
 	var allRetrieved = true;

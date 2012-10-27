@@ -24,7 +24,7 @@ Returns a new voice client instance.
 
 
 ## Authentication tokens
-voice.js uses three different authentication tokens when communicating with the Google Voice service, as discussed in 'TOKENS'. Not every token is needed for every request. voice.js will know which token is needed and will make sure it gets it before the request. If a request fails, voice.js will try obtaining a new token and repeating the request once before returning an error.
+voice.js uses three different authentication tokens when communicating with the Google Voice service, as discussed in `TOKENS.md`. Not every token is needed for every request. voice.js will know which token is needed and will make sure it gets it before the request. If a request fails, voice.js will try obtaining a new token and repeating the request once before returning an error.
 
 Three token-retrieval methods are provided if you want to retrieve the tokens yourself.
 
@@ -252,7 +252,7 @@ Get the number that must be dialed on the forwarding phone to enable/disable voi
 
 ## Google Voice name
 #### client.name( 'get', callback )
-#### client.name( 'record, { number: number }, callback )
+#### client.name( 'record' , { number: number }, callback )
 #### client.name( 'cancel', callback )
 
 
