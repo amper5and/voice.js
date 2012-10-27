@@ -9,7 +9,7 @@
   "homepage" : "https://github.com/amper5and/voice.js",
   "bugs" : "http://github.com/amper5and/voice.js/issues",
   "main" : "./voice.js",
-  "name" : "voicejs",
+  "name" : "voice.js",
   "repository" : {
     "type" : "git",
     "url" : "git://github.com/amper5and/voice.js.git"

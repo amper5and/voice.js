@@ -24,9 +24,9 @@ It currently allows you to:
 ## Installation
 Install via [npm](https://npmjs.org):
 
-	npm install voicejs
+	npm install voice.js
 
-As this is in alpha, the version of npm may not reflect all the latest changes. To get the most up-to-date version, download [the current master](https://github.com/amper5and/voice.js/zipball/master), then run the following code from inside the folder:
+The version of npm may not reflect all the latest changes, especially during times of heavy development. To get the most up-to-date version, download [the current master](https://github.com/amper5and/voice.js/zipball/master), then run the following code from inside the folder:
 
 	npm install
 
