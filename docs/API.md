@@ -41,6 +41,15 @@ Retrieves the 'rnr' authentication token.
 Retrieves the 'gvx' authentication token.
 
 
+## Events
+
+### client.on( 'status', function( error, status ){} )
+Fires when there is an updated account status in a response. `status` is an object containing various account settings, including unread counts. See `examples/updates.js` for usage.
+
+### client.on( tokenName , function( error, token))
+Fires when a NEW or CHANGED token is retrieved. `tokenName` can be 'auth', 'gvx', or 'rnr.' See `examples/tokens.js` for example usage.
+
+
 ## Calls
 
 #### client.connect( { to: to, from: from }, callback )
@@ -67,9 +76,10 @@ Send an sms to one or more recipients, without getting the conversation id in th
 * to: String or Array, required - The outgoing phone number(s)
 * text: String, optional - The text message
 
+
 ## Get updated counts
 #### client.getCounts( function(error, labels){} )
-Gets the updated read/unread count for each label. `labels` is an Array with the standard Google Voice labels. Each label has `unread_count`, `total_count`, and `last_modified_timestamp` properties.
+Gets the updated read/unread count for each label. `labels` is an Array with the standard Google Voice labels. Each label has `unread_count`, `total_count`, and `last_modified_timestamp` properties. See `examples/updates.js` for example.
 
 
 ## Get conversations: client.get(command, options, callback)

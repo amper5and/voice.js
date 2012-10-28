@@ -30,7 +30,7 @@ function newToken(){ // check if the client has all the tokens
 
 
 // Whenever a NEW token is retrieved, the corresponding event is emitted. 
-// Note: These events are only emitted when the newly-retrieved token has CHANGED from the stored token.
+// Note: These events are only emitted when the newly-retrieved token is CHANGED or NEW.
 client.on('auth', newToken);
 client.on('gvx', newToken);
 client.on('rnr', newToken)

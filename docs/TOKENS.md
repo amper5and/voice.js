@@ -20,7 +20,7 @@ The short of it is:
 
 
 ### Token events
-As tokens are obtained from Google Voice, the client emits the 'auth', 'rnr', and 'gvx' events with the new tokens.
+As tokens are obtained from Google Voice, the client emits the 'auth', 'rnr', and 'gvx' events with the new tokens. These events fire only for CHANGED or NEW tokens.
 Notice that the 'auth' event fires twice. That's because an `auth` token is obtained in two cases:
 
 1. when the auth token is retrieved
