@@ -1,6 +1,9 @@
 voice.js API
 ============
 
+This document is a work-in-progress. For clarity on methods that don't have documentation, check the `examples/` folder to see if any of the examples demonstrate usage.
+
+
 ## Callbacks
 Unless otherwise specified, all callbacks are of the following form: Function( error, response, data )
 
@@ -26,10 +29,10 @@ Returns a new voice client instance.
 ## Authentication tokens
 voice.js uses three different authentication tokens when communicating with the Google Voice service, as discussed in `TOKENS.md`. Not every token is needed for every request. voice.js will know which token is needed and will make sure it gets it before the request. If a request fails, voice.js will try obtaining a new token and repeating the request once before returning an error.
 
-Three token-retrieval methods are provided if you want to retrieve the tokens yourself.
-
 #### client.getTokens()
 Returns an object containing the current authentication tokens.
+
+Three token-retrieval methods are provided if you want to retrieve the tokens yourself.
 
 #### client.auth( function(error, token){} )
 Retrieves the 'auth' authentication token.
@@ -43,10 +46,10 @@ Retrieves the 'gvx' authentication token.
 
 ## Events
 
-### client.on( 'status', function( error, status ){} )
+#### client.on( 'status', function( error, status ){} )
 Fires when there is an updated account status in a response. `status` is an object containing various account settings, including unread counts. See `examples/updates.js` for usage.
 
-### client.on( tokenName , function( error, token))
+#### client.on( tokenName , function( error, token))
 Fires when a NEW or CHANGED token is retrieved. `tokenName` can be 'auth', 'gvx', or 'rnr.' See `examples/tokens.js` for example usage.
 
 
@@ -183,7 +186,7 @@ Set various GV settings. Some settings can be set individually without affecting
 * showTranscripts: Boolean
 * filterGlobalSpam: Boolean
 * doNotDisturb: Boolean - enable/disable Do Not Disturb (see below)
-* doNotDisturbExpiration: Date - set an expiration date for Do Not Disturb (see below)
+* doNotDisturbExpiration: Javascript Date object - set an expiration date for Do Not Disturb (see below)
 * pin: String - the PIN to access your voicemail
 * inCallOptions: Boolean - Enable in-call options, such as pressing 4 to record or * to switch to another phone
 * askForName: Boolean - Callers are requested to speak their name before being connected
@@ -207,7 +210,7 @@ Turns on Do Not Disturb without an expiration date.
 #### client.settings( 'set', { doNotDisturbExpiration: date }, callback )
 Turns on DND with an expiration date.
 
-* date: Date - The date and time when DND will be disabled.
+* date: Javascript Date object - The date and time when DND will be disabled.
 
 
 ## Forwarding phones: client.phones(command,options,callback)
@@ -249,7 +252,9 @@ Get the carrier of a forwarding phone. Found in the `carrier` property of the re
 Get the number that must be dialed on the forwarding phone to enable/disable voicemail diversion to GV. Found in the `diversionNum` property of the response.
 
 * id: Number, required - A forwarding phone id
-* carrier: String, required - The forwarding phone carrier
+* carrier: String, required - The forwarding phone carrier. This is a string like "VERIZON" or "ATT." The carrier of a particular forwarding phone can be retrieved in one of two ways:
+	* As the `.carrier` property of the forwarding phone when retrieved using `client.phones('get')` (see above)
+	* As the `.carrier` property of the response when retreived using `client.phones('checkCarrier',...)` (see above)
 
 
 ## Contacts

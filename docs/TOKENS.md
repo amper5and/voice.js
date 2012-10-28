@@ -7,7 +7,6 @@ voice.js uses three different tokens to authenticate with Google Voice: `auth`, 
 ### Token retrieval
 Tokens can be retrieved using the `client.auth()`, `client.rnr()`, and `client.gvx()` methods. To get a `gvx` or `rnr` token, an `auth` token is needed. If an `auth` token is not available or is invalid, `client.rnr()` and `client.gvx()` will automatically try to get one.
 
-
 ### How tokens are issued
 An `rnr` token is issued independently, that is, its value does not depend on the `auth` token used to retrieve it. It is always the same for the same user.
 
@@ -17,6 +16,36 @@ The short of it is:
 
  1. An `auth` token is valid with only ONE specific `gvx` token
  2. A `gvx` token is valid with MULTIPLE `auth` tokens (each of which may be used to retrieve that `gvx` token)
+
+### How tokens are used
+All requests need an `auth` token.
+
+The following methods additionally need a `gvx` token:
+
+* client.call(...)
+* client.sms(...)
+* client.get(...)
+* client.getCounts(...)
+* client.set('mark', ...)
+
+The following methods additionally need an `rnr` token:
+
+* client.connect(...)
+* client.altsms(...)
+* client.cancel(...)
+* All client.set(...) methods except client.set('mark', ...)
+* client.forward(...)
+* client.settings('enableDnd', ...)
+* client.settings('disableDnd', ...)
+* client.settings('set', ...)
+* All client.phones(...) methods except 'checkIfVerified', 'enableVoicemail', and 'disableVoicemail'
+* client.contacts('new', ...)
+* client.contacts('editSettings', ...)
+* client.name('record', ...)
+* client.name('cancel', ...)
+* client.widgets('new', ...)
+* client.widgets('edit', ...)
+* client.widgets('delete', ...)
 
 
 ### Token events
