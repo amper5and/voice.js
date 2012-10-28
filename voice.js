@@ -35,28 +35,47 @@ exports.Client = function(options){
 		email: options.email,
 		password: options.password
 	};
+	
 	this._clientlogin = new clientlogin.GoogleClientLogin({
 		email: options.email,
 		password: options.password,
 		service:'voice'
 	});
 	
-	this._tokens = options.tokens || {};
+
+	var tokens = {}; // protected variable
+	
+	if(options.tokens){ // populate tokens
+		for(var name in options.tokens){
+			if(!!~DEFAULTS.tokenTypes.indexOf(name)){
+				tokens[name] = options.tokens[name]
+			}
+		}
+	}
+	
+	this.getTokens = function(name){
+		if(name){
+			return tokens[name];
+		}
+
+		var toks = {};
+		for(var name in tokens){
+			toks[name] = tokens[name]
+		}
+		return toks;
+	};
+	
+	this._setToken = function(name, value){
+		if(!!~DEFAULTS.tokenTypes.indexOf(name)){
+			tokens[name] = value;
+			return true;
+		}else{
+			return false;
+		}
+	};
 };
 
 exports.Client.prototype = Object.create(EE.prototype);
-
-exports.Client.prototype.getTokens = function(){
-	var toks = {};
-	for(var name in this._tokens){
-		toks[name] = this._tokens[name]
-	}
-	return toks;
-};
-
-exports.Client.prototype._setToken = function(name, value){
-	this._tokens[name] = value;
-};
 
 exports.Client.prototype.auth = function(callback){
 	var self = this;
