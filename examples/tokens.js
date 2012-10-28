@@ -9,6 +9,9 @@ var client = new voicejs.Client({
 // This example retrieves the different authentication tokens and saves them to tokens.json
 // See the file TOKENS.md for more information on tokens.
 
+
+// This fn will monitor token events until all 3 tokens are retrieved. 
+// When all three are retrieved, they will be saved to tokens.json
 function newToken(){ // check if the client has all the tokens
 	var allRetrieved = true;
 	var tokens = client.getTokens();
@@ -25,24 +28,12 @@ function newToken(){ // check if the client has all the tokens
 	}
 };
 
-client.on('auth', function(token){
-	console.log('\nNew auth token event');
-	console.log(token);
-	newToken();
-});
 
-client.on('gvx', function(token){
-	console.log('\nNew gvx token event');
-	console.log(token);
-	newToken();
-});
-
-client.on('rnr', function(token){
-	console.log('\nNew rnr token event');
-	console.log(token);
-	newToken();
-});
-
+// Whenever a NEW token is retrieved, the corresponding event is emitted. 
+// Note: These events are only emitted when the newly-retrieved token has CHANGED from the stored token.
+client.on('auth', newToken);
+client.on('gvx', newToken);
+client.on('rnr', newToken)
 
 
 // Get an auth token

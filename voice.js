@@ -91,7 +91,7 @@ exports.Client.prototype.auth = function(callback){
 		self._processing_auth = false;
 		if(err){
 			err = new GoogleVoiceError('LOGIN_ERROR', err);
-		}else{
+		}else if(authToken !== self.getTokens('auth')){
 			self._setToken('auth', authToken)
 			self.emit('auth', authToken);
 		}
@@ -228,10 +228,14 @@ exports.Client.prototype.gvx = function(callback, isRepeat){
 			auth: getCookie(jar, 'gv').value
 		};
 		if(tokens && tokens.gvx && tokens.auth){
-			self._setToken('gvx', tokens.gvx);
-			self._setToken('auth', tokens.auth);
-			self.emit('auth', tokens.auth, tokens.gvx);
-			self.emit('gvx', tokens.gvx, tokens.auth);
+			if(tokens.gvx !== self.getTokens('gvx')){
+				self._setToken('gvx', tokens.gvx);
+				self.emit('gvx', tokens.gvx, tokens.auth);
+			}
+			if(tokens.auth !== self.getTokens('auth')){
+				self._setToken('auth', tokens.auth);
+				self.emit('auth', tokens.auth, tokens.gvx);
+			}
 			self.emit('_processed_gvx',null, tokens.gvx);
 			return callback(null, tokens.gvx, res, body);
 		}else{
