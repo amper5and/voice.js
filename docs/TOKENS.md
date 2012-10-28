@@ -46,7 +46,11 @@ The following methods additionally need an `rnr` token:
 * client.widgets('new', ...)
 * client.widgets('edit', ...)
 * client.widgets('delete', ...)
-
+* client.greetings('new', ...)
+* client.greetings('rename', ...)
+* client.greetings('delete', ...)
+* client.greetings('record', ...)
+* client.greetings('cancelRecord', ...)
 
 ### Token events
 As tokens are obtained from Google Voice, the client emits the 'auth', 'rnr', and 'gvx' events with the new tokens. These events fire only for CHANGED or NEW tokens.
