@@ -17,10 +17,9 @@ client.contacts('get', function(error, response, data){
 	
 	console.log('\nPHONEBOOK:');
 	for(var id in data.contacts){
-		console.log();
-		console.log(data.contacts[id].name, data.contacts[id].emails.join(', ') );
+		console.log('\n', data.contacts[id].name, data.contacts[id].emails.join(', ') );
 		data.contacts[id].numbers.forEach(function(number){
-			console.log('%s: %s', number.phoneType, number.displayNumber);
+			console.log('    %s: %s', number.phoneType, number.displayNumber);
 		});
 	};
 });

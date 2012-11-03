@@ -43,14 +43,14 @@ client.greetings('get', function(error, response, data){
 		// Record the greeting
 		client.greetings('record',{
 			id: greetingId,
-			number: 'email@gmail.com' // Call Google Talk to record the greeting. Note: This must be one of your forwarding phones.
+			number: client.config.email // Call Google Talk to record the greeting. Note: This must be one of your forwarding phones.
 		}, function(error, response, data){
 
 			if(error){
 				return console.log('Error initiating greeting record:', error);
 			}
 
-			console.log('Calling to record greeting');
+			console.log('Calling Google Talk forwarding phone', client.config.email, 'to record greeting');
 
 
 			//cancel the call after 10 seconds and delete the greeting
@@ -65,7 +65,7 @@ client.greetings('get', function(error, response, data){
 					// Delete the greeting
 					console.log('Deleting the greeting');
 					client.greetings('delete', {id:greetingId}, function(error, response, data){
-						console.log(error ? error : 'Deleted greeting');
+						console.log(error ? error : 'Deleted greeting with id', greetingId);
 					});
 				})
 			}, 10000)

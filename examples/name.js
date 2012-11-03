@@ -15,17 +15,17 @@ client.name('get', function(error, response, data){
 	}
 	
 	fs.writeFileSync('name.mp3', data);
-	console.log('Name audio file downloaded.')
+	console.log('Name audio file downloaded to name.mp3')
 });
 
 
 // Receive a call to record a new name on your Google Talk phone
-client.name('record',{ number: 'email@gmail.com'}, function(error, response, data){
+client.name('record',{ number: client.config.email}, function(error, response, data){
 	if(error){
 		return console.log(error);
 	}
 	
-	console.log('Calling you.');
+	console.log('Calling you on Google Talk forwarding phone', client.config.email, 'to record name');
 	
 	// cancel the call after 7 seconds
 	setTimeout(function(){

@@ -7,21 +7,25 @@ var client = new voicejs.Client({
 });
 
 
+var text = process.argv[4] || 'This is a test sms from voice.js';
+var to = process.argv.slice(5).length ?  process.argv.slice(5) : ['18005551212', '18005551213'];
+
+
 // There are two ways to send texts. 
 
 // The first method returns the new conversation id, but doesn't allow sending to multiple recipients
-client.sms({ to: '18005551212', text: "It's all right..."}, function(err, res, data){
+client.sms({ to: to[0], text: text}, function(err, res, data){
 	if(err){
 		return console.log(err);
 	}
-	console.log('SMS sent. Conversation id: ', data.send_sms_response.conversation_id);
+	console.log('SMS "' +text+ '" sent to', to[0] + '. Conversation id: ', data.send_sms_response.conversation_id);
 });
 
 
 // The second method does NOT return the new conversation id, but allows sending to multiple recipients
-client.altsms({ to: ['18005551212','18005551213'], text: "It's all right..."}, function(err, res, data){
+client.altsms({ to: to, text: text}, function(err, res, data){
 	if(err){
 		return console.log(err);
 	}
-	console.log('SMS sent.', data);
+	console.log('SMS "' +text+ '" sent to', to.join(', '));
 });
