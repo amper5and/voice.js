@@ -32,7 +32,7 @@ voice.js uses three different authentication tokens when communicating with the 
 #### client.getTokens()
 Returns an object containing the current authentication tokens.
 
-Three token-retrieval methods are provided if you want to retrieve the tokens yourself.
+Three token-retrieval methods are provided if you want to retrieve the tokens yourself:
 
 #### client.auth( function(error, token){} )
 Retrieves the 'auth' authentication token.
@@ -110,6 +110,7 @@ Download the audio of a recorded or voicemail message. The response is the binar
 
 
 ## Edit conversations: client.set(command, options, callback)
+The following commands allow you to manipulate conversations. See `examples/star.js` for examples.
 
 #### client.set( 'mark', options, callback )
 Mark/unmark one or more conversations as read, starred, spam, or archived. Optionally, toggle trash on a conversation. 
@@ -158,7 +159,7 @@ Restore Google's original transcript for a voicemail conversation
 ## Email calls
 
 #### client.forward( { id: id, email: email, subject: subject, body: body, link: link }, callback )
-Forward voicemails and recorded calls to one or more email recipients.
+Forward voicemails and recorded calls to one or more email recipients. See `examples/forward.js` for examples.
 
 * id: String, required - The voicemail or recording conversation id
 * email: String or Array - The email(s) to forward to
@@ -168,6 +169,7 @@ Forward voicemails and recorded calls to one or more email recipients.
 
 
 ## Settings: client.settings(command, options, callback)
+The following methods allow you to get and edit various GV settings. See `examples/settings.js` for examples. 
 
 #### client.settings( 'get', callback )
 Retrieve Google Voice settings, forwarding phones, groups, and greetings. See `examples/settings.js` for information on how to process the response.
@@ -196,7 +198,7 @@ Set various GV settings. Some settings can be set individually without affecting
 
 
 ## Do Not Disturb Status
-See `examples/doNotDisturb.js` for further explanations on how to get/set DND status
+See `examples/doNotDisturb.js` for further explanations on how to get/set DND status.
 
 #### client.settings( 'getDnd', callback )
 Response has `enabled` and `expiration` properties that indicate if DND is enabled and when it is going to expire.
@@ -210,7 +212,7 @@ Turns on Do Not Disturb without an expiration date.
 #### client.settings( 'set', { doNotDisturbExpiration: date }, callback )
 Turns on DND with an expiration date.
 
-* date: Javascript Date object - The date and time when DND will be disabled.
+* date: Javascript Date object - The date and time when DND should be automatically disabled.
 
 
 ## Forwarding phones: client.phones(command,options,callback)
@@ -258,32 +260,91 @@ Get the number that must be dialed on the forwarding phone to enable/disable voi
 
 
 ## Contacts
+See `examples/contact.js` for examples and clarification.
+
 #### client.contacts( 'get', callback )
+Get all GV contacts. Response has two lists: `contacts`, which lists contacts by contact id, and `contactPhones` which lists contacts by phone number.
+
 #### client.contacts( 'new', options, callback )
-#### client.contacts( 'getSettings', callback )
+Create a new contact, optionally first checking if the contact will clash with existing contacts. `options` has the following properties:
+
+* name: String, required - the contact name
+* number: String, required - the phone number
+* type: String, required - the phone type. Must be one of these four capitalized strings: 'HOME', 'MOBILE', or 'WORK'
+* check: Boolean, optional, default `false` - whether to first check if the contact will clash with an existing contact. Setting this to `true` does NOT add the contact. See below.
+* focusId: String, optional - this is what GV calls a "focus id", which is a special id for an existing contact with which the new contact will be merged. See below.
+
+##### Merging contacts
+When `check` is `true` the response from GV will have a `matchingContacts` property which is an array of contacts that might match the contact you are trying to add. Each contact in `matchingContacts` has a `detail` and `focusId` property. The `focusId` can be used to merge a new contact with an old one. When a valid `focusId` is passed to `client.contacts('new'...)` the new contact will be merged with the contact corresponding to the focus id. See `examples/contacts.js` for a detailed example.
+
+
+#### client.contacts( 'getSettings', { id: id }, callback )
+Retrieve the GV settings for a particular contact. It takes one property, `id`, which must be a valid contact id string as obtained using `client.contacts('get', callback)`. The response has the property `contactData` which contains the settings.
+
 #### client.contacts( 'editSettings', options, callback )
+Set GV settings for a particular contact. `options` takes the following properties:
+
+* id: String, required - the contact id (retrieved with `client.contacts('get',...)`)
+* groupId: Number, optional, default `0` - the group id this contact should belong to. Defaults to `0`, which is the built-in "All Contacts" group. 
+* greetingId: Number, optional, default `0` - the greeting this contact should hear. See `client.greetings('get', ...)` for info on how to retrieve greetings. Defaults to `0`, which is the default GV greeting.
+* disabledPhoneIds: Array, optional - an array of your forwarding numbers that should NOT ring for this contact. Phone ids must be numbers (see `client.phones('get',...)` for info on how to retrieve your forwarding phone ids)
+* response: String, optional, default 'DEFAULT' - what should happen when the contact rings you. Must be one of these four capitalized strings: 'DEFAULT' (default response for the contact's group), 'SPAM' (treat as spam caller), 'BLOCK' (block the caller, by playing a 'number not in service' message), or 'VOICEMAIL' (send the contact directly to voicemail). 
+* onRing: String, optional, default 'default' - What should happen when you pick up the phone to answer a call from this contact. Must be one of the following three strings: 'direct' (start talking right away), 'options' (be presented with options for answering the call or sending to voicemail), or 'default' (use the default response from the contact's group)
+
 #### client.contacts( 'getBlockedMessage', callback )
+Retrieve the audio that blocked callers will hear when calling your GV number. The response is in mp3 format.
 
 
 ## Google Voice name
 #### client.name( 'get', callback )
+Retrieve the audio of your name that callers hear when calling your GV number. The response is in mp3 format.
+
 #### client.name( 'record' , { number: number }, callback )
+Trigger a callback on a forwarding phone to record a new name. `number` is a string. You will receive a callback on the number with prompts to record your name.
+
 #### client.name( 'cancel', callback )
+Cancel the callback to record a new name.
 
 
 ## Greetings
 #### client.greetings( 'get', callback )
-#### client.greetings( 'getAudio', callback )
+Retrieve all your greetings from GV. The response contains the `settings.greetings` property will a list of all greetings. Each greeting has a `name` and `id` property.
+
+#### client.greetings( 'getAudio', { id: id },  callback )
+Get the audio for a particular greeting. `id` is a required Number that is one of your greeting ids. The response is in mp3 format.
+
 #### client.greetings( 'new', { name: name, default: default}, callback )
+Create a new greeting. The options are:
+
+* name: String, required - a name for the greeting
+* default: Boolean, optional, default `false` - whether this should be the default greeting
+
 #### client.greetings( 'rename', { id: id, name: name }, callback )
+Rename an existing GV greeting. The options are:
+
+* id: Number, required - the greeting id (see above)
+* name: String, required - the new greeting name
+
 #### client.greetings( 'delete', { id: id }, callback )
+Delete an existing GV greeting. `id` is a number corresponding to one of your greeting ids (see above).
+
+
 #### client.greetings( 'record', { id: id, number: number }, callback )
+Trigger a callback on a forwarding phone to record a new message for an existing greeting. The options are
+
+* id: Number, required - the greeting id (see above)
+* number: String, required - one of your forwarding phone numbers
+
 #### client.greetings( 'cancelRecord', callback )
+Cancel the callback to record a new greeting.
 
 
 ## Webcall widgets
+Webcall widgets are Flash widgets that you can place on your site for users to enter their number and call you directly. The following methods allow you to manipulate and create webcall widgets. See `examples/widgets.js` for examples and clarification of usage.
+
 #### client.widgets( 'get', callback )
+Retrieve your current webcall widgets. The response has the `settings.webCallButtons` Array which contains all your widgets. See `examples/widgets.js` for clarification on what each property of each widget means.
+
 #### client.widgets( 'new', options, callback )
 #### client.widgets( 'edit', options, callback )
 #### client.widgets( 'delete', { id: id }, callback )
-

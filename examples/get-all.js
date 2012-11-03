@@ -2,8 +2,8 @@ var fs = require('fs');
 var voicejs = require('../voice.js');
 
 var client = new voicejs.Client({
-    email: 'email@gmail.com',
-	password: 'password',
+	email: process.argv[2] || 'email@gmail.com',
+	password: process.argv[3] || 'password',
 	tokens: require('./tokens.json')
 });
 

@@ -1,8 +1,8 @@
 var voicejs = require('../voice.js');
 
 var client = new voicejs.Client({
-	email: 'email@gmail.com',
-	password: 'password',
+	email: process.argv[2] || 'email@gmail.com',
+	password: process.argv[3] || 'password',
 	tokens: require('./tokens.json')
 });
 
@@ -24,7 +24,7 @@ client.connect({ to: '18005551212', from: '1234567890'}, function(err, res, data
 
 
 // Connect to 18005551212 using Google Talk
-client.connect({ to: '18005551212', from: 'email@gmail.com' }, function(err, res, data){
+client.connect({ to: '18005551212', from: client.config.email }, function(err, res, data){
 	if(err){
 		return console.log(err);
 	}

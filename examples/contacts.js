@@ -3,8 +3,8 @@ var voicejs = require('../voice.js');
 var fs = require('fs');
 
 var client = new voicejs.Client({
-	email: 'email@gmail.com',
-	password: 'password',
+	email: process.argv[2] || 'email@gmail.com',
+	password: process.argv[3] || 'password',
 	tokens: require('./tokens.json')
 });
 
@@ -102,19 +102,18 @@ client.contacts('new',{
 				}else{
 					console.log('\nChanged contact settings succesfully.');
 				}
-			});
-			
-			
-			// Download the mp3 message that will be played for blocked callers:
-			client.contacts('getBlockedMessage', function(error, response, data){
-				if(error){
-					return console.log('ERROR DOWNLOADING BLOCKED MESSAGE:', error);
-				}
 				
-				fs.writeFileSync('blockedMessage.mp3', data);
-				console.log('Saved blocked message to blockedMessage.mp3');
-			});
+				
+				// Download the mp3 message that will be played for blocked callers:
+				client.contacts('getBlockedMessage', function(error, response, data){
+					if(error){
+						return console.log('ERROR DOWNLOADING BLOCKED MESSAGE:', error);
+					}
+
+					fs.writeFileSync('blockedMessage.mp3', data);
+					console.log('Saved blocked message to blockedMessage.mp3');
+				});
+			});	
 		});
 	});
-	
 });
