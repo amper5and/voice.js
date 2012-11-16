@@ -34,23 +34,23 @@ Returns an object containing the current authentication tokens.
 
 Three token-retrieval methods are provided if you want to retrieve the tokens yourself:
 
-#### client.auth( function(error, token){} )
+#### client.auth( function( error, token ){} )
 Retrieves the 'auth' authentication token.
 
-#### client.rnr( function(error, token){} )
+#### client.rnr( function( error, token ){} )
 Retrieves the 'rnr' authentication token.
 	
-#### client.gvx( function(error, token){} )
+#### client.gvx( function( error, token ){} )
 Retrieves the 'gvx' authentication token.
 
 
 ## Events
 
-#### client.on( 'status', function( error, status ){} )
+#### client.on( 'status', function( status ){} )
 Fires when there is an updated account status in a response. `status` is an object containing various account settings, including unread counts. See `examples/updates.js` for usage.
 
-#### client.on( tokenName , function( error, token))
-Fires when a NEW or CHANGED token is retrieved. `tokenName` can be 'auth', 'gvx', or 'rnr.' See `examples/tokens.js` for example usage.
+#### client.on( tokenName , function( token ){} )
+Fires when a NEW or CHANGED token is retrieved. `tokenName` can be 'auth', 'gvx', or 'rnr'. See `examples/tokens.js` for example usage.
 
 
 ## Calls
