@@ -1,5 +1,6 @@
 voice.js API
 ============
+version 0.1.1-alpha
 
 This document is a work-in-progress. For clarity on methods that don't have documentation, check the `examples/` folder to see if any of the examples demonstrate usage.
 
@@ -7,9 +8,9 @@ This document is a work-in-progress. For clarity on methods that don't have docu
 ## Callbacks
 Unless otherwise specified, all callbacks are of the following form: Function( error, response, data )
 
-* error: an instance of GoogleVoiceError, containing a `code`, `message`, and optionally `details`
-* response: the response object from the require module, containing information about the http request and response
-* data: The returned data. Most often an object, unless it was impossible to parse the response. This is usually the page body when the http status code is 500. This is binary audio data for audio requests.
+* error: an instance of GoogleVoiceError, containing `code`, `message`, and optionally `details` properties.
+* response: the response object from the `require` module, containing information about the http request and response
+* data: The returned data. Most often an *object*, unless it was impossible to parse the response. This is usually the *raw html* page body when the http status code is 500. This is *binary* audio data for audio requests.
 
 All callbacks are optional.
 
@@ -29,19 +30,19 @@ Returns a new voice client instance.
 ## Authentication tokens
 voice.js uses three different authentication tokens when communicating with the Google Voice service, as discussed in `TOKENS.md`. Not every token is needed for every request. voice.js will know which token is needed and will make sure it gets it before the request. If a request fails, voice.js will try obtaining a new token and repeating the request once before returning an error.
 
-#### client.getTokens()
-Returns an object containing the current authentication tokens.
-
-Three token-retrieval methods are provided if you want to retrieve the tokens yourself:
+Three token-retrieval methods are provided if you want to retrieve the tokens yourself. These three methods issue http requests to get the most up-to-date token(s) from Google. Because voice.js handles token-retrieval internally, it is usually unnecessary to use these low-level methods. 
 
 #### client.auth( function( error, token ){} )
-Retrieves the 'auth' authentication token.
+Retrieves the 'auth' authentication token from Google.
 
 #### client.rnr( function( error, token ){} )
-Retrieves the 'rnr' authentication token.
+Retrieves the 'rnr' authentication token from Google.
 	
 #### client.gvx( function( error, token ){} )
-Retrieves the 'gvx' authentication token.
+Retrieves the 'gvx' authentication token from Google.
+
+#### client.getTokens()
+Returns an object containing the current authentication tokens. Note that this does not issue requests to Google. It only returns the currently-retrieved tokens i.e. previously retrieved internally by voice.js or by manual calls to `client.auth()`, `client.rnr()`, or `client.gvx()` (see above).
 
 
 ## Events
@@ -110,10 +111,10 @@ Download the audio of a recorded or voicemail message. The response is the binar
 
 
 ## Edit conversations: client.set(command, options, callback)
-The following commands allow you to manipulate conversations. See `examples/star.js` for examples.
+The following commands allow you to manipulate conversations. See `examples/star.js` for examples. There are different forms for this method, depending on `command`:
 
 #### client.set( 'mark', options, callback )
-Mark/unmark one or more conversations as read, starred, spam, or archived. Optionally, toggle trash on a conversation. 
+Mark/unmark one or more conversations as `read`, `starred`, `spam`, or `archived`. Optionally, `toggle trash` on a conversation. 
 
 `options` takes the following parameters:
 
@@ -162,7 +163,7 @@ Restore Google's original transcript for a voicemail conversation
 Forward voicemails and recorded calls to one or more email recipients. See `examples/forward.js` for examples.
 
 * id: String, required - The voicemail or recording conversation id
-* email: String or Array - The email(s) to forward to
+* email: String or Array, required - The email(s) to forward to
 * subject: String, optional, default `' '` - Email subject
 * body: String, optional, default `' '` - Email body
 * link: Boolean, optional, default `false` - Whether to include a link to audio and a copy of the transcript.
@@ -224,14 +225,17 @@ The response has `phones` and `phoneList` properties that contain information on
 #### client.phones( command, { id: id }, callback )
 Get/set various settings of a forwarding phone.
 
-* command: String, required - one of:
-	* 'enable'/'disable'
-	* 'enableSMS'/'disableSMS' - enable/disable SMS forwarding to the phone
-	* 'enableVoicemailNotifyBySMS'/'disableVoicemailNotifyBySMS' - enable/disable voicemail forwarding to the phone via SMS
+* command: String, required - one of the following strings:
+	* 'enable' - enable the forwarding phone
+	* 'disable' - disable the forwarding phone
+	* 'enableSMS' - enable SMS forwarding to the phone
+	* 'disableSMS' - disable SMS forwarding to the phone
+	* 'enableVoicemailNotifyBySMS' - enable voicemail forwarding to the phone via SMS
+	* 'disableVoicemailNotifyBySMS' - disable voicemail forwarding to the phone via SMS
 	* 'delete' - Delete the forwarding phone
 	* 'checkIfVerified' - Check if the forwarding phone has been verified
 	* 'checkIllegalSharing' - Check if a forwarding phone is being used on another GV account (`needsReclaim` property in the response)
-* id: Number - One of your forwarding phone ids
+* id: Number, required - One of your forwarding phone ids
 
 #### client.phones( 'new', options, callback )
 
@@ -250,13 +254,15 @@ Get the carrier of a forwarding phone. Found in the `carrier` property of the re
 * number: String, required - The forwarding phone number
 
 #### client.phones( 'enableVoicemail', { id: id, carrier: carrier }, callback )
+Get the number that must be dialed on the forwarding phone to enable voicemail diversion to GV. Found in the `diversionNum` property of the response.
+
 #### client.phones( 'disableVoicemail', { id: id, carrier: carrier }, callback )
-Get the number that must be dialed on the forwarding phone to enable/disable voicemail diversion to GV. Found in the `diversionNum` property of the response.
+Get the number that must be dialed on the forwarding phone to disable voicemail diversion to GV. Found in the `diversionNum` property of the response.
 
 * id: Number, required - A forwarding phone id
 * carrier: String, required - The forwarding phone carrier. This is a string like "VERIZON" or "ATT." The carrier of a particular forwarding phone can be retrieved in one of two ways:
 	* As the `.carrier` property of the forwarding phone when retrieved using `client.phones('get')` (see above)
-	* As the `.carrier` property of the response when retreived using `client.phones('checkCarrier',...)` (see above)
+	* As the `.carrier` property of the response when retrieved using `client.phones('checkCarrier',...)` (see above)
 
 
 ## Contacts
@@ -271,8 +277,8 @@ Create a new contact, optionally first checking if the contact will clash with e
 * name: String, required - the contact name
 * number: String, required - the phone number
 * type: String, required - the phone type. Must be one of these four capitalized strings: 'HOME', 'MOBILE', or 'WORK'
-* check: Boolean, optional, default `false` - whether to first check if the contact will clash with an existing contact. Setting this to `true` does NOT add the contact. See below.
-* focusId: String, optional - this is what GV calls a "focus id", which is a special id for an existing contact with which the new contact will be merged. See below.
+* check: Boolean, optional, default `false` - whether to first check if the contact will clash with an existing contact. Setting this to `true` does NOT add the contact. See *Merging Contacts* below.
+* focusId: String, optional - this is what GV calls a "focus id", which is a special id for an existing contact with which the new contact will be merged. See *Merging Contacts* below.
 
 ##### Merging contacts
 When `check` is `true` the response from GV will have a `matchingContacts` property which is an array of contacts that might match the contact you are trying to add. Each contact in `matchingContacts` has a `detail` and `focusId` property. The `focusId` can be used to merge a new contact with an old one. When a valid `focusId` is passed to `client.contacts('new'...)` the new contact will be merged with the contact corresponding to the focus id. See `examples/contacts.js` for a detailed example.
@@ -300,10 +306,10 @@ Retrieve the audio that blocked callers will hear when calling your GV number. T
 Retrieve the audio of your name that callers hear when calling your GV number. The response is in mp3 format.
 
 #### client.name( 'record' , { number: number }, callback )
-Trigger a callback on a forwarding phone to record a new name. `number` is a string. You will receive a callback on the number with prompts to record your name.
+Trigger a call from Google on a forwarding phone to record a new name. `number` is a string. You will receive a callback on the number with prompts to record your name.
 
 #### client.name( 'cancel', callback )
-Cancel the callback to record a new name.
+Cancel the callback from Google to record a new name.
 
 
 ## Greetings
@@ -330,17 +336,17 @@ Delete an existing GV greeting. `id` is a number corresponding to one of your gr
 
 
 #### client.greetings( 'record', { id: id, number: number }, callback )
-Trigger a callback on a forwarding phone to record a new message for an existing greeting. The options are
+Trigger a call from Google on a forwarding phone to record a new message for an existing greeting. The options are:
 
 * id: Number, required - the greeting id (see above)
 * number: String, required - one of your forwarding phone numbers
 
 #### client.greetings( 'cancelRecord', callback )
-Cancel the callback to record a new greeting.
+Cancel the call from Google to record a new greeting.
 
 
 ## Webcall widgets
-Webcall widgets are Flash widgets that you can place on your site for users to enter their number and call you directly. The following methods allow you to manipulate and create webcall widgets. See `examples/widgets.js` for examples and clarification of usage.
+Webcall widgets are Flash objects that you can place on your site for users to enter their number and call you directly. The following methods allow you to manipulate and create webcall widgets. See `examples/widgets.js` for examples and clarification of usage.
 
 #### client.widgets( 'get', callback )
 Retrieve your current webcall widgets. The response has the `settings.webCallButtons` Array which contains all your widgets. See `examples/widgets.js` for clarification on what each property of each widget means.

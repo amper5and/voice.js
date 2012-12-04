@@ -1,6 +1,5 @@
 voice.js 
 ========
-version 1.0.0 (alpha)
 
 
 ## What is it?
@@ -22,11 +21,11 @@ It currently allows you to:
 
 
 ## Installation
-Install via [npm](https://npmjs.org):
+Install via [npm](https://npmjs.org/package/voice.js):
 
 	npm install voice.js
 
-The version of npm may not reflect all the latest changes, especially during times of heavy development. To get the most up-to-date version, download [the current master](https://github.com/amper5and/voice.js/zipball/master), then run the following code from inside the folder:
+The version on npm may not reflect all the latest changes, especially during times of heavy development. To get the most up-to-date version, download [the current master zip file](https://github.com/amper5and/voice.js/zipball/master), then run the following code from inside the folder:
 
 	npm install
 
