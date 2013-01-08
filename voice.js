@@ -1,6 +1,5 @@
 var EE = require('events').EventEmitter,
     querystring = require('querystring'),
-    util = require('util'),
     clientlogin = require('googleclientlogin'),
     request = require('request'),
     xml2js = require('xml2js');
