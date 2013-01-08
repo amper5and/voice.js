@@ -3,8 +3,7 @@ var voicejs = require('../voice.js');
 
 var client = new voicejs.Client({
 	email: process.argv[2] || 'email@gmail.com',
-	password: process.argv[3] || 'password',
-	tokens: require('./tokens.json')
+	password: process.argv[3] || 'password'
 });
 
 // This example retrieves the different authentication tokens and saves them to tokens.json
