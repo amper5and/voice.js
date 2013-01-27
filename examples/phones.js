@@ -28,7 +28,6 @@ function processResponse(error, response, data){
 			voicejs.DEFAULTS.phoneTypeMap[phones[id].type],
 			phones[id].phoneNumber,
 			phones[id].carrier,
-			phones[id].active ? 'enabled' : 'disabled',
 			phones[id].verified ? 'verified' : 'unverified',
 			phones[id].smsEnabled ? 'receives SMS' : ''
 		);
@@ -36,7 +35,7 @@ function processResponse(error, response, data){
 	if(data.settings.smsNotifications.length){
 		console.log('\nForwarding phones that receive sms voicemail notifications:');
 		data.settings.smsNotifications.forEach(function(phone){
-			console.log(phone.address, phone.active ? 'active' : 'inactive');
+			console.log(phone.address);
 		})
 	}
 };
