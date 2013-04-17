@@ -200,10 +200,13 @@ exports.Client.prototype.gvx = function(callback, isRepeat){
 	
 	var jar = request.jar(); // the cookie jar
 	request({
-		uri: 'https://www.google.com/voice/m?auth=' + this.getTokens().auth,
+		uri: 'https://www.google.com/voice/m?initialauth&pli=1',
 		followRedirect: false,
 		jar: jar,
-		headers: { 'User-Agent': DEFAULTS.mobileHeader }
+		headers: { 
+			'User-Agent': DEFAULTS.mobileHeader,
+			Authorization: 'GoogleLogin auth=' + this.getTokens().auth // Google ClientLogin authentication
+		}
 	},function(err, res, body){
 		self._processing_gvx = false;		
 		if(err){			
@@ -224,16 +227,11 @@ exports.Client.prototype.gvx = function(callback, isRepeat){
 		}
 		var tokens = {
 			gvx: getCookie(jar, 'gvx').value,
-			auth: getCookie(jar, 'gv').value
 		};
-		if(tokens && tokens.gvx && tokens.auth){
+		if(tokens && tokens.gvx){
 			if(tokens.gvx !== self.getTokens('gvx')){
 				self._setToken('gvx', tokens.gvx);
 				self.emit('gvx', tokens.gvx, tokens.auth);
-			}
-			if(tokens.auth !== self.getTokens('auth')){
-				self._setToken('auth', tokens.auth);
-				self.emit('auth', tokens.auth, tokens.gvx);
 			}
 			self.emit('_processed_gvx',null, tokens.gvx);
 			return callback(null, tokens.gvx, res, body);
