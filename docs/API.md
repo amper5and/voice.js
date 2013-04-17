@@ -1,8 +1,12 @@
 voice.js API
 ============
-version 0.1.1-alpha
+version 0.1.4
+
 
 This document is a work-in-progress. For clarity on methods that don't have documentation, check the `examples/` folder to see if any of the examples demonstrate usage.
+
+## Update 4/16/2013:
+Google has changed many of it's responses. Many of the examples in the /examples folder need to be updated to account for these changes. When all else fails, look at the raw responses to determine how the data is returned.
 
 
 ## Callbacks
