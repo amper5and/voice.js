@@ -1,3 +1,6 @@
+## Update 4/16/2013:
+Google has changed many of it's responses. Many of the examples in the /examples folder need to be updated to account for these changes. When all else fails, look at the raw responses to determine how the data is returned. New examples are being worked on, but may take some time. As always, pull requests are appreciated.
+
 #### To use the examples:
 Examples can be run in one of two ways:
 
