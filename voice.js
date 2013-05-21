@@ -565,8 +565,8 @@ exports.Client.prototype.getCounts = function(callback){
 		if(error){
 			return callback(error, null, response, data);
 		}
-		if(data && data.account_status && data.account_status.label){
-			callback(null, data.account_status.label, response, data)
+		if(data && data.labels_response && data.labels_response.label){
+			callback(null, data.labels_response.label, response, data)
 		}else{
 			callback(new GoogleVoiceError('UNKNOWN_FORMAT'), null, response, data); 
 		}
