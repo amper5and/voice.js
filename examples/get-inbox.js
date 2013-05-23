@@ -21,13 +21,13 @@ Array.prototype.is = function(entry){
 function displayConversations(conversations){
     conversations.forEach(function(convo, index){
 		console.log('%s %s. %s %s %s %s   %s', 
-			convo.read ? ' ' : '+', 
+			convo.conversation.status == 1 ? ' ' : '+', 
 			(index+1+'').padLeft(3),  
-			convo.phone_call[0].contact.phone_number_formatted.padLeft(15), 
-			new Date(convo.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
-			convo.label.is('starred') ? '*' : ' ',
-			convo.id,
-			convo.label.join()
+			convo.call[0].phone_number.padLeft(15), 
+			new Date(convo.conversation.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
+			convo.conversation.label.is('starred') ? '*' : ' ',
+			convo.conversation.id,
+			convo.conversation.label.join()
 		);
 	});
 }
@@ -39,10 +39,10 @@ client.get('inbox', function(error, response, data){
 		return console.log(error);
 	}
     
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations.')}
 	
 	console.log('\n INBOX: Latest conversations');
-	displayConversations(data.conversations_response.conversation);
+	displayConversations(data.conversations_response.conversationgroup);
 });
 
 
@@ -52,8 +52,8 @@ client.get('inbox', {start: 10, limit: 5}, function(error, response, data){
 		return console.log(error);
 	}
 	
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations.')}
 	
-	console.log('\n INBOX: Conversations 10-'+ (10+data.conversations_response.conversation.length-1) );
-	displayConversations(data.conversations_response.conversation);
+	console.log('\n INBOX: Conversations 10-'+ (10+data.conversations_response.conversationgroup.length-1) );
+	displayConversations(data.conversations_response.conversationgroup);
 });
