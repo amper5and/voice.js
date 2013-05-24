@@ -12,12 +12,13 @@ client.get('sms', {limit:5}, function(error, response, data){
 		return console.log(error);
 	}
 	
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations.')}
 	
 	console.log('SMS: Latest conversations.');
-	data.conversations_response.conversation.forEach(function(convo){
-		console.log('\n', convo.read ? ' ' : '+', new Date(convo.conversation_time).toDateString(), convo.phone_call[0].contact.phone_number_formatted);
-		convo.phone_call.reverse().forEach(function(msg){
+
+	data.conversations_response.conversationgroup.forEach(function(convo){
+		console.log('\n', convo.conversation.status == 1 ? ' ' : '+', new Date(convo.conversation.conversation_time).toDateString(), convo.call[0].phone_number);
+		convo.call.reverse().forEach(function(msg){
 			console.log(new Date(msg.start_time).toISOString().replace(/[ZT]/g,' ').substr(0,16), msg.message_text);
 		});
 		
