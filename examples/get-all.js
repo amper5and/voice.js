@@ -26,24 +26,24 @@ client.get('all', {limit: Infinity}, function(error, response, data){
 	if(error){
 		return console.log(error);
 	}
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations.')}
 		
 	// Display the conversations in descending order indicating if they are unread (+) or starred (*), as well as all the labels associated with each
-	data.conversations_response.conversation.reverse().forEach(function(convo, index){
+	data.conversations_response.conversationgroup.reverse().forEach(function(convo, index){
 		console.log('%s %s. %s %s %s %s   %s', 
-			convo.read ? ' ' : '+', 
+			convo.conversation.status == 1 ? ' ' : '+', 
 			(index+1+'').padLeft(4),  
-			convo.phone_call[0].contact.phone_number_formatted.padLeft(18), 
-			new Date(convo.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
-			convo.label.is('starred') ? '*' : ' ',
-			convo.id,
-			convo.label.join()
+			convo.call[0].phone_number.padLeft(18),
+			new Date(convo.conversation.conversation_time).toISOString().replace(/[ZT]/g,' ').substr(0,16).padLeft(18),
+			convo.conversation.label.is('starred') ? '*' : ' ',
+			convo.conversation.id,
+			convo.conversation.label.join()
 		);
 	});
 	
-	console.log(data.conversations_response.conversation.length +  ' conversations retrieved');
+	console.log(data.conversations_response.conversationgroup.length +  ' conversations retrieved');
 	
 	// Save complete GV history to file
-	fs.writeFileSync('history.json', JSON.stringify(data.conversations_response.conversation));
+	fs.writeFileSync('history.json', JSON.stringify(data.conversations_response.conversationgroup));
 	console.log('Data saved to history.json');	
 });

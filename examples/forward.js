@@ -12,9 +12,9 @@ client.get('voicemail', {limit: 1}, function(error, response, data){
 		return console.log(error)
 	}
 	
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations.')}
-	
-	var id = data.conversations_response.conversation[0].id;
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations.')}
+
+	var id = data.conversations_response.conversationgroup[0].conversation.id;
 	
 	// Note that if you try to forward a non-voicemail/recorded message, a 500 Server Error (response.statusCode === 500) will occur
 	client.forward({
