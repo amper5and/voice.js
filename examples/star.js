@@ -20,11 +20,11 @@ Array.prototype.is = function(entry){
 client.get('starred', {limit: 10}, function(error, response, data){
 	if(error){ return console.log(error); }
 
-	if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No starred conversations')}
+	if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No starred conversations')}
 
 	console.log('\nLatest starred conversations:')
-	data.conversations_response.conversation.forEach(function(convo){
-		console.log(convo.id);
+	data.conversations_response.conversationgroup.forEach(function(convo){
+		console.log(convo.conversation.id);
 	});
 	
 	
@@ -33,14 +33,14 @@ client.get('starred', {limit: 10}, function(error, response, data){
 		if(error){
 			return console.log(error);
 		}
-		if(!data.conversations_response || !data.conversations_response.conversation){ return console.log('No conversations')}
+		if(!data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No conversations')}
 
 		console.log('\nConversations to star:')
 		var ids = [];
-		data.conversations_response.conversation.forEach(function(convo){	
-			console.log(convo.id);
-			if(!convo.label.is('starred')){ // if not currently starred, push to array of ids that wil be starred
-				ids.push(convo.id)
+		data.conversations_response.conversationgroup.forEach(function(convo){	
+			console.log(convo.conversation.id);
+			if(!convo.conversation.label.is('starred')){ // if not currently starred, push to array of ids that wil be starred
+				ids.push(convo.conversation.id)
 			}
 		});
 
@@ -55,11 +55,11 @@ client.get('starred', {limit: 10}, function(error, response, data){
 			client.get('starred', {limit: 10}, function(error, response, data){
 				if(error){ return console.log(error); }
 
-				if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No starred conversations')}
+				if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No starred conversations')}
 
 				console.log('\nLatest starred conversations:')
-				data.conversations_response.conversation.forEach(function(convo){
-					console.log(convo.id);
+				data.conversations_response.conversationgroup.forEach(function(convo){
+					console.log(convo.conversation.id);
 				});
 
 
@@ -74,11 +74,11 @@ client.get('starred', {limit: 10}, function(error, response, data){
 					client.get('starred', function(error, response, data){
 						if(error) return console.log(error);
 
-						if(!data || !data.conversations_response || !data.conversations_response.conversation){ return console.log('No starred conversations')}
+						if(!data || !data.conversations_response || !data.conversations_response.conversationgroup){ return console.log('No starred conversations')}
 
 						console.log('\nLatest starred conversations:')
-						data.conversations_response.conversation.forEach(function(convo){
-							console.log(convo.id);
+						data.conversations_response.conversationgroup.forEach(function(convo){
+							console.log(convo.conversation.id);
 						})
 					});
 				})
