@@ -73,6 +73,9 @@ Sets up and retrieves a dial-out number that can be used to make a call using th
 * from: String, required: the forwarding number to use for the call (can be Google Talk)
 
 #### client.sms( { to: to, text: text }, callback )
+
+UPDATE: As of 04/2013, Google does not return a `conversation_id` property. This method will be left in the current version of voice.js, but if Google continues to not supply the id, it may be removed or changed in future version of voice.js
+
 Send an sms to one recipient and get the conversation id in the response. Response has `send_sms_response.conversation_id` property with the conversation id.
 
 * to: String, required - The outgoing phone number
