@@ -172,10 +172,13 @@ exports.Client.prototype.rnr = function(callback, isRepeat){
 };
 
 
-var getCookie = function(jar, name){ // needs jar.cookies as Array
-	return jar.cookies.filter(function(cookie){
-		return cookie.name === name;
-	})[0] || {};
+var getCookie = function(jar, name){
+	var parts = ['store', 'idx', 'www.google.com', '/voice', name];
+	var obj = jar;
+	while (obj && parts.length) {
+		obj = obj[parts.shift()];
+	}
+	return obj || {};
 };
 
 exports.Client.prototype.gvx = function(callback, isRepeat){
