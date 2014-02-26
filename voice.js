@@ -173,7 +173,7 @@ exports.Client.prototype.rnr = function(callback, isRepeat){
 
 
 var getCookie = function(jar, name){
-	var parts = ['store', 'idx', 'www.google.com', '/voice', name];
+	var parts = ['_jar', 'store', 'idx', 'www.google.com', '/voice', 'gvx'];
 	var obj = jar;
 	while (obj && parts.length) {
 		obj = obj[parts.shift()];
