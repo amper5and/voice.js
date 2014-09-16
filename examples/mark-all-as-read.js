@@ -8,15 +8,17 @@ var client = new voicejs.Client({
 });
 
 function markAllAsRead(conversations){
-    conversations.forEach(function(convo, index){
-        client.set('mark', {id: convo.conversation.id, read:true}, 
-            function(error, response, data){
-                if (error) {
-                    return console.log(error);
-                }
-                console.log('Marked %s as read state.', convo.conversation.id);
-            }
-        );
+    var messageIds = [];
+    // constructing a list of message ids
+    for(var c in conversations) {
+        messageIds.push(conversations[c].conversation.id);
+    }
+    // marking all the messages as read state
+    client.set('mark', {id:messageIds, read:true}, function(error, response, data){
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Successfully mark all unread messages as read');
     });
 }
 
