@@ -1,5 +1,6 @@
 voice.js 
 ========
+## NOTICE: This project is no longer maintained.
 
 ## What is it?
 It's the Google Voice library for [node.js](http://nodejs.org/).
